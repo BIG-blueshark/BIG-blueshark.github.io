@@ -1,0 +1,700 @@
+<html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>API 설계</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-translucentGray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="32face02-7bf0-4f2a-881c-50853265008b" class="page sans"><header><h1 class="page-title">API 설계</h1><p class="page-description"></p><table class="properties"><tbody><tr class="property-row property-row-multi_select"><th><span class="icon property-icon"><svg role="graphics-symbol" viewBox="0 0 16 16" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.45);flex-shrink:0" class="typesMultipleSelect"><path d="M1.91602 4.83789C2.44238 4.83789 2.87305 4.40723 2.87305 3.87402C2.87305 3.34766 2.44238 2.91699 1.91602 2.91699C1.38281 2.91699 0.952148 3.34766 0.952148 3.87402C0.952148 4.40723 1.38281 4.83789 1.91602 4.83789ZM5.1084 4.52344H14.3984C14.7607 4.52344 15.0479 4.23633 15.0479 3.87402C15.0479 3.51172 14.7607 3.22461 14.3984 3.22461H5.1084C4.74609 3.22461 4.45898 3.51172 4.45898 3.87402C4.45898 4.23633 4.74609 4.52344 5.1084 4.52344ZM1.91602 9.03516C2.44238 9.03516 2.87305 8.60449 2.87305 8.07129C2.87305 7.54492 2.44238 7.11426 1.91602 7.11426C1.38281 7.11426 0.952148 7.54492 0.952148 8.07129C0.952148 8.60449 1.38281 9.03516 1.91602 9.03516ZM5.1084 8.7207H14.3984C14.7607 8.7207 15.0479 8.43359 15.0479 8.07129C15.0479 7.70898 14.7607 7.42188 14.3984 7.42188H5.1084C4.74609 7.42188 4.45898 7.70898 4.45898 8.07129C4.45898 8.43359 4.74609 8.7207 5.1084 8.7207ZM1.91602 13.2324C2.44238 13.2324 2.87305 12.8018 2.87305 12.2686C2.87305 11.7422 2.44238 11.3115 1.91602 11.3115C1.38281 11.3115 0.952148 11.7422 0.952148 12.2686C0.952148 12.8018 1.38281 13.2324 1.91602 13.2324ZM5.1084 12.918H14.3984C14.7607 12.918 15.0479 12.6309 15.0479 12.2686C15.0479 11.9062 14.7607 11.6191 14.3984 11.6191H5.1084C4.74609 11.6191 4.45898 11.9062 4.45898 12.2686C4.45898 12.6309 4.74609 12.918 5.1084 12.918Z"></path></svg></span>태그</th><td><span class="selected-value select-value-color-default">API</span><span class="selected-value select-value-color-green">설계</span></td></tr></tbody></table></header><div class="page-body"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">회원 API</summary><div class="indented"><p id="a093da58-2f10-4bba-8f81-78118a955141" class="">회원 가입</p><table id="8fd808aa-50db-43ae-8aca-a32b6778b53b" class="simple-table"><thead class="simple-table-header"><tr id="55bde2fb-d7df-41af-8a6b-a8e6ab478cda"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">속성</th><th id="L[~;" class="simple-table-header-color simple-table-header" style="width:335px">값</th><th id="EC=^" class="simple-table-header-color simple-table-header"></th></tr></thead><tbody><tr id="88c8dd7a-a24d-4d2a-b8ae-9a1c0ba29b64"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Method</th><td id="L[~;" class="" style="width:335px">POST</td><td id="EC=^" class=""></td></tr><tr id="d9f8aad3-174d-4b08-9937-7645a21a4a2c"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">URI</th><td id="L[~;" class="" style="width:335px">/join</td><td id="EC=^" class=""></td></tr><tr id="4630fe15-a94d-4467-a9d1-5ff0f808bdc9"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">HTTP status code</th><td id="L[~;" class="" style="width:335px">성공 201</td><td id="EC=^" class=""></td></tr><tr id="403b4323-1a37-41bb-843c-5bf5601d15aa"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Request Body</th><td id="L[~;" class="" style="width:335px">{<br/>    email: “사용자가 입력한 이메일”,<br/>    password: “사용자가 입력한 비밀번호”<br/>}<br/></td><td id="EC=^" class=""></td></tr><tr id="d911eb93-42ec-45aa-b27c-31b64fc519ff"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Response Body</th><td id="L[~;" class="" style="width:335px"></td><td id="EC=^" class=""></td></tr></tbody></table><p id="0aa320d1-d2a7-4d08-bac8-6367184dbeca" class="">
+</p><p id="7382af23-32b1-4992-82f8-abebc1bd4794" class="">로그인</p><table id="14fdb89d-6966-444b-8e6a-7c6c5c95567b" class="simple-table"><thead class="simple-table-header"><tr id="4723af06-3c4f-45db-a390-253b288cb780"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">속성</th><th id="L[~;" class="simple-table-header-color simple-table-header" style="width:335px">값</th><th id="EC=^" class="simple-table-header-color simple-table-header"></th></tr></thead><tbody><tr id="ae832fb3-5f43-4af5-85e9-13b0826ca08a"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Method</th><td id="L[~;" class="" style="width:335px">POST</td><td id="EC=^" class=""></td></tr><tr id="3a49ad7c-6f6c-4ef5-85d8-d49d99229e8f"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">URI</th><td id="L[~;" class="" style="width:335px">/login</td><td id="EC=^" class=""></td></tr><tr id="bc2f563a-9dac-41e0-8260-99a9579a188d"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">HTTP status code</th><td id="L[~;" class="" style="width:335px">성공 200</td><td id="EC=^" class=""></td></tr><tr id="86ee5fc9-815b-429e-a00f-4362ad1797f5"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Request Body</th><td id="L[~;" class="" style="width:335px">{<br/>    email: “사용자가 입력한 이메일”,<br/>    password: “사용자가 입력한 비밀번호”<br/>}<br/></td><td id="EC=^" class=""></td></tr><tr id="24f3c677-74a5-49f2-bcef-2c603de780c4"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Response Body</th><td id="L[~;" class="" style="width:335px">JWT Token</td><td id="EC=^" class=""></td></tr></tbody></table><p id="1e8cf503-2655-418e-8993-a1cdb94c0047" class="">
+</p><p id="45454b99-a0e5-450b-8c0b-a014c103bb0f" class="">비밀번호 초기화 요청</p><table id="98565274-abae-4648-9664-1155b09676ef" class="simple-table"><thead class="simple-table-header"><tr id="98463db6-2d89-4019-9a00-868d120f409a"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">속성</th><th id="L[~;" class="simple-table-header-color simple-table-header" style="width:335px">값</th><th id="EC=^" class="simple-table-header-color simple-table-header"></th></tr></thead><tbody><tr id="449e536d-0b60-4f5d-860d-d9ae83efdd5e"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Method</th><td id="L[~;" class="" style="width:335px">POST</td><td id="EC=^" class=""></td></tr><tr id="06da3a88-4008-4e25-8332-442746a0063b"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">URI</th><td id="L[~;" class="" style="width:335px">/reset</td><td id="EC=^" class=""></td></tr><tr id="dbf82762-7ad5-4880-9bca-82a6b0dc206f"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">HTTP status code</th><td id="L[~;" class="" style="width:335px">성공 200</td><td id="EC=^" class=""></td></tr><tr id="458d4a06-3ed2-4087-97f2-7d586802f89b"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Request Body</th><td id="L[~;" class="" style="width:335px">{<br/>    email: “사용자가 입력한 이메일”<br/>}<br/></td><td id="EC=^" class=""></td></tr><tr id="0ae6ffac-f426-496d-beea-2e4d18efd0df"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Response Body</th><td id="L[~;" class="" style="width:335px"></td><td id="EC=^" class=""></td></tr></tbody></table><p id="11731a37-1432-4e86-a8c0-d2abe932b266" class="">
+</p><p id="727bded9-4a84-47fc-9f37-d12be3ba4f04" class="">비밀번호 초기화</p><table id="d38b20f0-c025-4a3b-ac5c-54e784e5453c" class="simple-table"><thead class="simple-table-header"><tr id="847fe21f-8abf-44a1-9110-0997dfcd8139"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">속성</th><th id="L[~;" class="simple-table-header-color simple-table-header" style="width:335px">값</th><th id="EC=^" class="simple-table-header-color simple-table-header"></th></tr></thead><tbody><tr id="4cd326f0-8fd1-408a-af9e-626c32e52b17"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Method</th><td id="L[~;" class="" style="width:335px">PUT</td><td id="EC=^" class=""></td></tr><tr id="4b21ca8b-ff73-49cf-8ea1-31c0544867f9"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">URI</th><td id="L[~;" class="" style="width:335px">/reset</td><td id="EC=^" class=""></td></tr><tr id="644c7de1-7dce-4fe6-8520-69513c677b5f"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">HTTP status code</th><td id="L[~;" class="" style="width:335px">성공 200</td><td id="EC=^" class=""></td></tr><tr id="d6b79eef-b45b-407c-b288-42e5cec866bd"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Request Body</th><td id="L[~;" class="" style="width:335px">{<br/>    password: “사용자가 입력한 비밀번호”<br/>}<br/></td><td id="EC=^" class=""></td></tr><tr id="b69069f8-0352-4130-a150-22c6316ae6a2"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Response Body</th><td id="L[~;" class="" style="width:335px"></td><td id="EC=^" class=""></td></tr></tbody></table><p id="7c8630b5-ff5e-4eef-ba43-fe820ee4acf7" class="">
+</p></div></details><hr id="a5e7bf51-fe0a-4495-9268-40de2f8d210b"/><p id="ab11abbe-db23-41f6-b82e-6a48781c048f" class="">
+</p><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">도서 API</summary><div class="indented"><p id="8cceb517-7273-47b9-805e-c8b5937e1adb" class="">전체 도서 조회</p><table id="d3fafdbf-4428-4bfc-a678-d6875b5b1e28" class="simple-table"><thead class="simple-table-header"><tr id="0a9644e5-1bd0-4757-a927-46c29569a1f6"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">속성</th><th id="L[~;" class="simple-table-header-color simple-table-header" style="width:335px">값</th><th id="EC=^" class="simple-table-header-color simple-table-header"></th></tr></thead><tbody><tr id="44f286ed-8e5e-44b9-a2f5-9f70aedb894e"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Method</th><td id="L[~;" class="" style="width:335px">GET</td><td id="EC=^" class=""></td></tr><tr id="ff3bf3e6-3b09-456a-ae3b-138730aa2b3c"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">URI</th><td id="L[~;" class="" style="width:335px">/books</td><td id="EC=^" class=""></td></tr><tr id="833d57b6-c7c4-4121-8b70-5daaa3d023aa"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">HTTP status code</th><td id="L[~;" class="" style="width:335px">성공 200</td><td id="EC=^" class=""></td></tr><tr id="5093c45e-93ed-43c0-a83c-54cd334e4b2d"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Request Body</th><td id="L[~;" class="" style="width:335px"></td><td id="EC=^" class=""></td></tr><tr id="5e7c8e59-dd93-4694-a22c-9a23a42078a7"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Response Body</th><td id="L[~;" class="" style="width:335px">[<br/>    {<br/>        id: 도서 id,<br/>        title: “도서 제목”,<br/>        summary: “요약 설명”,<br/>        author: “도서 작가”,<br/>        price: 가격,<br/>        likes: 좋아요 수,<br/>        pubDate: “출간일”<br/>    },<br/>…<br/>}<br/></td><td id="EC=^" class=""></td></tr><tr id="4b503891-f032-4b06-b623-ddd11c6dab4c"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">기타: 이미지 경로</th><td id="L[~;" class="" style="width:335px">8개씩 </td><td id="EC=^" class=""></td></tr></tbody></table><p id="5ac8b75b-5f35-4a2a-a20e-d873dc292e3b" class="">
+</p><p id="9d82ffa7-2e6d-4ff3-b055-1a57632fc081" class="">개별 도서 조회</p><table id="d7f329b9-2412-44dd-8597-a95c6a83bb30" class="simple-table"><thead class="simple-table-header"><tr id="4d1a3b98-66e1-4095-accc-4d4a613d6468"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">속성</th><th id="L[~;" class="simple-table-header-color simple-table-header" style="width:335px">값</th><th id="EC=^" class="simple-table-header-color simple-table-header"></th></tr></thead><tbody><tr id="711a1dc5-46ba-4abe-a44d-564cefdfdd87"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Method</th><td id="L[~;" class="" style="width:335px">GET</td><td id="EC=^" class=""></td></tr><tr id="daf902b1-941d-42f2-8194-291867ad9ad4"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">URI</th><td id="L[~;" class="" style="width:335px">/books/{bookId}</td><td id="EC=^" class=""></td></tr><tr id="29fbe302-9fba-4e15-95a7-fa4dc0e0d672"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">HTTP status code</th><td id="L[~;" class="" style="width:335px">성공 200</td><td id="EC=^" class=""></td></tr><tr id="d5514dca-196b-4d49-b518-b75208078e63"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Request Body</th><td id="L[~;" class="" style="width:335px"></td><td id="EC=^" class=""></td></tr><tr id="780f1d05-d40b-4ea1-a73a-2dc7d5e4ee5d"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Response Body</th><td id="L[~;" class="" style="width:335px">[<br/>    {<br/>        id: 도서 id,<br/>        title: “도서 제목”,<br/>        category: “카테고리”,<br/>        format: “포맷”,<br/>        isbn: “isbn”,<br/>        summary: “요약 설명”,<br/>        description: “상세 설명”,<br/>        author: “도서 작가”,<br/>        pages: 쪽 수,<br/>        index: “목차”,<br/>        price: 가격,<br/>        likes: 좋아요 수<br/>        liked: boolean,<br/>        pubDate: “출간일”<br/>    },<br/>…<br/>}<br/></td><td id="EC=^" class=""></td></tr><tr id="9d3d099c-8c3f-40b1-a59d-2ad277eb155a"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">기타 이미지 경로</th><td id="L[~;" class="" style="width:335px">1</td><td id="EC=^" class=""></td></tr></tbody></table><p id="607c19ea-1b4d-4163-8695-8ef1bd763fda" class="">
+</p><p id="fe9d6d93-7061-46fd-89f1-b86794f51de1" class="">카테고리별 도서 목록 조회</p><p id="7e868ce5-1725-4d55-b5ae-6599d91037cd" class="">🔶 new : true 조건 [ 신간 조회 기준 : 출간일 30일 이내 ]</p><table id="89d98404-d2a2-4d6c-b7d2-12c92402f5d4" class="simple-table"><thead class="simple-table-header"><tr id="903baa42-0c9c-4e6d-a36b-172b23c91406"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">속성</th><th id="L[~;" class="simple-table-header-color simple-table-header" style="width:335px">값</th><th id="EC=^" class="simple-table-header-color simple-table-header"></th></tr></thead><tbody><tr id="80f92f32-5b32-4c25-8577-137994d5aa57"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Method</th><td id="L[~;" class="" style="width:335px">GET</td><td id="EC=^" class=""></td></tr><tr id="d6ae63bd-822c-4b40-8470-9dbedc0c17ca"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">URI</th><td id="L[~;" class="" style="width:335px">/books?categoryId={categoryId}&amp;new={boolean}</td><td id="EC=^" class=""></td></tr><tr id="71f9e2c9-5691-4a69-bd09-1357675c9eee"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">HTTP status code</th><td id="L[~;" class="" style="width:335px">성공 200</td><td id="EC=^" class=""></td></tr><tr id="90dfed7e-8316-4e64-9763-904c611b18ee"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Request Body</th><td id="L[~;" class="" style="width:335px"></td><td id="EC=^" class=""></td></tr><tr id="10528c91-0c4c-4970-afe0-8fb4bbc5fe85"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Response Body</th><td id="L[~;" class="" style="width:335px">[<br/>    {<br/>        title: “도서 제목”,<br/>        summary: “요약 설명”,<br/>        author: “도서 작가”,<br/>        price: 가격,<br/>        likes: 좋아요 수<br/>        pubDate: “출간일”<br/>    },<br/>…<br/>}<br/></td><td id="EC=^" class=""></td></tr><tr id="b6626651-79a1-4915-a974-506fa46a14dc"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">기타 이미지 경로, 카테고리 id 식별 및 전</th><td id="L[~;" class="" style="width:335px">이미지 , 카테고리 id</td><td id="EC=^" class=""></td></tr></tbody></table><p id="0cdae7f6-8c4b-498f-bf13-b49666d040e1" class="">
+</p></div></details><hr id="476b680b-3a83-4e34-954a-5fa870bba161"/><p id="a423719d-defb-4c39-b546-cdba3d44eb58" class="">
+</p><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">좋아요 API</summary><div class="indented"><p id="a9734b71-d7ff-4882-8855-68da543f28b6" class="">좋아요 추가</p><table id="c2a35c21-2480-456d-81f4-ec60c7f99e60" class="simple-table"><thead class="simple-table-header"><tr id="96d5263e-03fa-4be8-bfe5-4135a54d94b7"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">속성</th><th id="L[~;" class="simple-table-header-color simple-table-header" style="width:335px">값</th></tr></thead><tbody><tr id="7d32d661-344a-4c5b-a017-e84ec20307bb"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Method</th><td id="L[~;" class="" style="width:335px">POST</td></tr><tr id="a547770f-ade9-406e-aab4-e2c4cf74518e"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">URI</th><td id="L[~;" class="" style="width:335px">/likes/{bookId}</td></tr><tr id="892c6ee5-e0f7-4621-95e0-cb94636cfe1b"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">HTTP status code</th><td id="L[~;" class="" style="width:335px">성공 200</td></tr><tr id="cfd9b3bf-3196-4813-af7b-dcb3fd6c18f5"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Request Body</th><td id="L[~;" class="" style="width:335px"></td></tr><tr id="0fbce589-3587-4737-8f13-2a2d96e45e26"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Response Body</th><td id="L[~;" class="" style="width:335px"></td></tr></tbody></table><p id="433323d3-7e37-40e3-a4a7-288b7438e653" class="">
+</p><p id="076a3eee-0465-4ebf-a0c2-0ebab990a1c3" class="">좋아요 취소</p><table id="23f6d1c0-3081-4740-ab84-4ff4ee8ab695" class="simple-table"><thead class="simple-table-header"><tr id="b658a768-c887-4999-9ee2-963e8b87e676"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">속성</th><th id="L[~;" class="simple-table-header-color simple-table-header" style="width:335px">값</th></tr></thead><tbody><tr id="1e9db602-7c70-43cb-bc92-3cfffd2ae65c"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Method</th><td id="L[~;" class="" style="width:335px">DELETE</td></tr><tr id="ff5c8fad-f567-4a1b-82e3-75b03ac22de5"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">URI</th><td id="L[~;" class="" style="width:335px">/likes/{bookId}</td></tr><tr id="7a41b316-dda1-4cd0-b180-586726945b2e"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">HTTP status code</th><td id="L[~;" class="" style="width:335px">성공 200</td></tr><tr id="e4f482f6-fe71-46e8-a772-cbc13234b91c"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Request Body</th><td id="L[~;" class="" style="width:335px"></td></tr><tr id="9833c556-1815-4aff-9163-23b353606c37"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Response Body</th><td id="L[~;" class="" style="width:335px"></td></tr></tbody></table><p id="8e2bce2e-7962-487b-b87a-040cacc8e634" class="">
+</p></div></details><hr id="9de4704d-58c4-471b-bb48-f8cf8757069f"/><p id="29ea7915-cd99-4201-b748-c676e17a0717" class="">
+</p><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">장바구니 API</summary><div class="indented"><p id="5af37b11-a369-4142-b9b3-b809157190f4" class="">장바구니 담기</p><table id="2e65014b-c166-42b1-8be5-38fe158009f3" class="simple-table"><thead class="simple-table-header"><tr id="8471ea23-c91f-4048-89f7-ace0680cd309"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">속성</th><th id="L[~;" class="simple-table-header-color simple-table-header" style="width:335px">값</th></tr></thead><tbody><tr id="dca68e3f-9ad6-4e42-9701-42fb10f9228d"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Method</th><td id="L[~;" class="" style="width:335px">POST</td></tr><tr id="d2446308-45bf-4180-a0ca-129d7ffafbb3"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">URI</th><td id="L[~;" class="" style="width:335px">/cart</td></tr><tr id="369a6f47-097f-4aaa-97ef-28c61771c5d0"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">HTTP status code</th><td id="L[~;" class="" style="width:335px">성공 201</td></tr><tr id="41390668-d9bb-4e62-ac2c-b886c348b823"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Request Body</th><td id="L[~;" class="" style="width:335px"></td></tr><tr id="436ecf63-70f3-454e-a24e-498d19e7f173"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Response Body</th><td id="L[~;" class="" style="width:335px">{<br/>    bookId: 도서 id,<br/>    count: 수량<br/>}<br/></td></tr></tbody></table><p id="aa2b09ad-5d5b-4d61-a3ac-ed0ceaba22b3" class="">
+</p><p id="a6091a2e-c619-4a56-a28c-ac6e33cd8182" class="">장바구니 조회</p><table id="beebbb88-9ef0-4e28-a546-e908a5880d2a" class="simple-table"><thead class="simple-table-header"><tr id="7d78c6de-6565-42c7-bb24-c8a72ffb908b"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">속성</th><th id="L[~;" class="simple-table-header-color simple-table-header" style="width:335px">값</th></tr></thead><tbody><tr id="481380aa-4cfb-4641-b153-24558fd8ceac"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Method</th><td id="L[~;" class="" style="width:335px">GET</td></tr><tr id="ce90bb58-0889-483a-a44d-b3cac5576739"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">URI</th><td id="L[~;" class="" style="width:335px">/cart</td></tr><tr id="fd3e937c-f072-43c0-b301-0415971dfc10"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">HTTP status code</th><td id="L[~;" class="" style="width:335px">성공 200</td></tr><tr id="0be062c9-3649-4c70-bdc9-780d94941e3d"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Request Body</th><td id="L[~;" class="" style="width:335px"></td></tr><tr id="15e24fb4-2b89-4148-b663-5572db191c4b"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Response Body</th><td id="L[~;" class="" style="width:335px">[<br/>    {<br/>        bookId: 도서 id,<br/>        title: “도서 제목”,<br/>        summary: “요약 성명”,<br/>        count: 수량,<br/>        price: 가격<br/>    },<br/>…<br/>]<br/></td></tr></tbody></table><p id="fdb85861-7e86-45b8-8c57-a35767c913c1" class="">
+</p><p id="0cf01bdc-88f3-4e97-a358-acab2e42d0f6" class="">장바구니 도서 삭제</p><table id="c55997e8-0ef6-4a45-b805-6bb077aabb89" class="simple-table"><thead class="simple-table-header"><tr id="b982b782-2f38-479a-996b-2b3323b5a386"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">속성</th><th id="L[~;" class="simple-table-header-color simple-table-header" style="width:335px">값</th></tr></thead><tbody><tr id="f7fd3daa-4e00-4d0a-8cfe-436bb01ced8b"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Method</th><td id="L[~;" class="" style="width:335px">DELETE</td></tr><tr id="64cf952c-f4c3-4d5c-9568-3b824a099282"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">URI</th><td id="L[~;" class="" style="width:335px">/cart/{bookId}</td></tr><tr id="7b59bc0a-71dd-49fb-ad87-31ca2bb7a9b0"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">HTTP status code</th><td id="L[~;" class="" style="width:335px">성공 200</td></tr><tr id="e912f916-d2ff-4d95-96de-0f360a2013d2"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Request Body</th><td id="L[~;" class="" style="width:335px"></td></tr><tr id="ead34b90-ea71-47a6-b5e1-ea91d1c64305"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Response Body</th><td id="L[~;" class="" style="width:335px"></td></tr></tbody></table><p id="e6792c34-fb6f-4ce4-9731-439942c46cad" class="">
+</p><p id="1e6c8f56-150e-4026-80f2-5cf2c7e14792" class="">장바구니에서 주문 예상 상품 목록 조회</p><table id="3f45de3d-86e1-4b13-b222-d6b5ae1e1025" class="simple-table"><thead class="simple-table-header"><tr id="687df2ff-62ab-4b24-912b-cd97e4f98ba8"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">속성</th><th id="L[~;" class="simple-table-header-color simple-table-header" style="width:335px">값</th></tr></thead><tbody><tr id="5c21be22-2710-425c-a24a-0214efafe739"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Method</th><td id="L[~;" class="" style="width:335px">GET</td></tr><tr id="10b7fcb5-df84-44b2-b055-2f9713d9d92e"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">URI</th><td id="L[~;" class="" style="width:335px">/</td></tr><tr id="f769521d-2d70-4d0f-8064-d3fe6a084a9a"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">HTTP status code</th><td id="L[~;" class="" style="width:335px">성공 200</td></tr><tr id="80631276-7760-467e-b86d-63c77a01bc81"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Request Body</th><td id="L[~;" class="" style="width:335px">[ cartItemId, … ]</td></tr><tr id="3db0a024-ccfc-4727-b72c-d727fbebbe9d"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Response Body</th><td id="L[~;" class="" style="width:335px">[<br/>    {<br/>        cartItemId: 장바구니 도서 id,<br/>        bookId: 도서 id,<br/>        title: “도서 제목”,<br/>        summary: “요약 성명”,<br/>        count: 수량,<br/>        price: 가격<br/>    },<br/>…<br/>]<br/></td></tr></tbody></table><p id="5060bd97-fc5e-4c04-8b46-9c89a24706b9" class="">
+</p></div></details><hr id="84390755-4bf2-4d25-ac2d-0beb1f0beac3"/><p id="6bc25f3d-600f-4afe-ad35-e62a511eda05" class="">
+</p><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">결제(주문) API</summary><div class="indented"><p id="2de18afc-24f6-4492-bcf4-c24baf1de85b" class="">결제하기(주문하기, 주문 등록) = 데이터 베이스 insert</p><table id="0b59dd4c-3fe0-4464-9556-0b780343bff5" class="simple-table"><thead class="simple-table-header"><tr id="aec7d239-5370-4996-a313-256a9e4b7ba1"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">속성</th><th id="L[~;" class="simple-table-header-color simple-table-header" style="width:335px">값</th></tr></thead><tbody><tr id="c7d1a739-510d-4c19-bfd6-47ec9b15d3fa"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Method</th><td id="L[~;" class="" style="width:335px">POST</td></tr><tr id="f1c658d9-8e4d-4149-90b7-df63ff3adb20"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">URI</th><td id="L[~;" class="" style="width:335px">/orders</td></tr><tr id="9cb9833c-7d5e-40d0-838f-7615b304b1a6"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">HTTP status code</th><td id="L[~;" class="" style="width:335px">성공 200</td></tr><tr id="76969ed4-48ed-4109-aca9-899bf750bcec"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Request Body</th><td id="L[~;" class="" style="width:335px">{<br/>    items: [     {<br/>        cartIemId: 장바구니 도서 id,<br/>        bookId: 도서 id,<br/>        count: 수량<br/>    }, { …. }, …     ],<br/>    delivery: {<br/>        address: “주소”,<br/>        receiver: “이름”,<br/>        contact: “전화 번호”<br/>    },<br/>    totalPrice: 총 금액<br/>}<br/></td></tr><tr id="ecc960c2-d35d-4716-b091-75085c10cd70"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Response Body</th><td id="L[~;" class="" style="width:335px"></td></tr></tbody></table><p id="8d7c740d-c021-4530-9606-95289863785c" class="">
+</p><p id="6a5f7be8-1438-4816-b9bf-c04158c24cc5" class="">주문 목록(내역) 조회</p><table id="ea5cc1ea-8d28-470e-a145-ec97fc99f9ff" class="simple-table"><thead class="simple-table-header"><tr id="d1b1981e-f096-496c-ab47-e9f4267fd4ae"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">속성</th><th id="L[~;" class="simple-table-header-color simple-table-header" style="width:335px">값</th></tr></thead><tbody><tr id="b87a8f2f-f43a-4c4b-a6e8-a6e7dd13d14c"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Method</th><td id="L[~;" class="" style="width:335px">POST</td></tr><tr id="63bda6d6-a224-4516-86f4-f7a45d8773c1"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">URI</th><td id="L[~;" class="" style="width:335px">/orders</td></tr><tr id="01a8699c-3768-44f2-a214-01e6bdeec578"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">HTTP status code</th><td id="L[~;" class="" style="width:335px">성공 200</td></tr><tr id="1369b9ef-6b75-48e7-afe0-6335144815a7"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Request Body</th><td id="L[~;" class="" style="width:335px"></td></tr><tr id="a0312d69-703a-4a85-aae0-dbde1c111517"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Response Body</th><td id="L[~;" class="" style="width:335px">[<br/>    {<br/>        order_id: 주문 id,<br/>        created_at: “주문 일자”,<br/>        delivery: {<br/>            address: “주소”,<br/>            receiver: “이름”,<br/>            contact: “전화번호”<br/>        },<br/>        bookTitle: “대표 책 제목”,<br/>        totalPrice: 결제 금액,<br/>        totalCount: 총 수량<br/>    }, …<br/>]<br/></td></tr></tbody></table><p id="a6fb32dd-04f9-4751-83bb-45f0ef061a9f" class="">
+</p><p id="c3ef3b7f-5bbe-429a-a9f4-ba2718342a5d" class="">주문 상세 상품 조회</p><table id="b18e18c5-e2e9-4b26-9d73-58d69d29886b" class="simple-table"><thead class="simple-table-header"><tr id="390c5cf5-6a57-468f-adaa-3d58432826f3"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">속성</th><th id="L[~;" class="simple-table-header-color simple-table-header" style="width:335px">값</th></tr></thead><tbody><tr id="00107352-032b-4b13-a1be-97cb21705675"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Method</th><td id="L[~;" class="" style="width:335px">GET</td></tr><tr id="a89b34be-11ff-4d34-a2ec-f38f14321b62"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">URI</th><td id="L[~;" class="" style="width:335px">/orders/{orderId}</td></tr><tr id="548f66d2-c0dd-4764-bc4e-547eec9b1436"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">HTTP status code</th><td id="L[~;" class="" style="width:335px">성공 200</td></tr><tr id="4a264158-a47c-40a7-8ff8-527cf1696a7a"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Request Body</th><td id="L[~;" class="" style="width:335px"></td></tr><tr id="ff731085-fddd-43e2-8c63-18a3db29c506"><th id="@;mm" class="simple-table-header-color simple-table-header" style="width:335px">Response Body</th><td id="L[~;" class="" style="width:335px">[<br/>    {<br/>        bookId: 도서 id,<br/>        bookTitle: “도서 제목”,<br/>        author: “작가명”,<br/>        price: 가격,<br/>        count: 수량<br/>    }, …<br/>]<br/></td></tr></tbody></table><p id="8ffea11b-3f6b-47b3-aa21-3de7eaa39296" class="">
+</p></div></details><hr id="7e6dd57a-4ec1-4d1e-96cc-acc50626978a"/><p id="6b2e3349-dac5-4b8f-b077-cf198891fd35" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span>
+
+<img src="../img/API 설계.png" alt="api 설계 이미지">
+</body></html>
