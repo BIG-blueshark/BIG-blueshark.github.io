@@ -2,12 +2,7 @@
 const express = require("express");
 const router = express.Router();
 const conn = require("../mariadb");
-const {
-  join,
-  login,
-  passordResetRequest,
-  passwordReset,
-} = require("../controller/UserController");
+const { join, login, passordResetRequest, passwordReset } = require("../controller/UserController");
 
 router.use(express.json());
 
