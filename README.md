@@ -8,19 +8,19 @@
 
 ## 파일 구조
 
-📦WebFullStack
-┣ 📂.git
-┣ 📂pair-coding
-┃ ┣ 📂add-in // 새로운 기능 추가
-┃ ┗ 📂modify // 팀 코드 적용
-┣ 📂sprint1
-┃ ┣ 📂src
-┃ ┃ ┗ 📂Tennis // 스프린트 1 프로젝트
-┣ 📂sprint2
-┃ ┣ 📂src
-┃ ┃ ┣ 📂Book
-┃ ┃ ┃ ┣ 📂API // 스프린트 2 프로젝트
-┃ ┃ ┃ ┣ 📜API.html // 스프린트 2 페이지
+    📦WebFullStack
+    ┃ 📂.git
+    ┣ 📂pair-coding
+    ┃ ┣ 📂add-in // 새로운 기능 추가
+    ┃ ┗ 📂modify // 팀 코드 적용
+    ┣ 📂sprint1
+    ┃ ┣ 📂src
+    ┃ ┃ ┗ 📂Tennis // 스프린트 1 프로젝트
+    ┣ 📂sprint2
+    ┃ ┣ 📂src
+    ┃ ┃ ┣ 📂Book
+    ┃ ┃ ┃ ┣ 📂API // 스프린트 2 프로젝트
+    ┗ ┗ ┗ ┗ 📜API.html // 스프린트 2 페이지
 
 -   WebFullStack/index.html : 프로젝트들을 포토카드 형식으로 보기 쉽게 링크한 페이지
 -   WebFullStack/sprint1 : **스프린트1** 과 관련된 프로젝트 저장
