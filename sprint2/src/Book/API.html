@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>API 설계</title>
+        <link rel="stylesheet" href="/WebFullStack/normalize.css" />
+        <link rel="stylesheet" href="API.css" />
+    </head>
+    <body>
+        <header>
+            <h1 id="title">API 설계</h1>
+        </header>
+        <div id="wrap">
+            <aside>
+                <ul>
+                    <li>
+                        <a
+                            href="#"
+                            onclick="AtagActive(this, '#info', 'None', 'None')"
+                            class="active"
+                            ><strong>정보</strong></a
+                        >
+                    </li>
+                    <hr />
+                    <li>
+                        <a href="#" onclick="AtagActive(this, '#join', 'User', 'const join')"
+                            >회원가입</a
+                        >
+                    </li>
+                    <li>
+                        <a href="#" onclick="AtagActive(this, '#login', 'User', 'const login')"
+                            >로그인</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            href="#"
+                            onclick="AtagActive(this, '#passordResetRequest', 'User', 'const passordResetRequest')"
+                            >비밀번호 초기화 요청</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            href="#"
+                            onclick="AtagActive(this, '#passwordReset', 'User', 'const passwordReset')"
+                            >비밀번호 초기화</a
+                        >
+                    </li>
+                    <hr />
+                    <li>
+                        <a
+                            href="#"
+                            onclick="AtagActive(this, '#allBooks', 'Book', 'const allBooks')"
+                            >전체 도서 조회</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            href="#"
+                            onclick="AtagActive(this, '#bookDetail', 'Book', 'const bookDetail')"
+                            >개별 도서 조회</a
+                        >
+                    </li>
+                    <hr />
+                    <li>
+                        <a
+                            href="#"
+                            onclick="AtagActive(this, '#allCategory', 'Category', 'const allCategory')"
+                            >카테고리별 전체 조회</a
+                        >
+                    </li>
+                    <hr />
+                    <li>
+                        <a href="#" onclick="AtagActive(this, '#addLike', 'Like', 'const addLike')"
+                            >좋아요 추가</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            href="#"
+                            onclick="AtagActive(this, '#removeLike', 'Like', 'const removeLike')"
+                            >좋아요 취소</a
+                        >
+                    </li>
+                    <hr />
+                    <li>
+                        <a
+                            href="#"
+                            onclick="AtagActive(this, '#addToCart', 'Cart', 'const addToCart')"
+                            >장바구니 담기</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            href="#"
+                            onclick="AtagActive(this, '#getCartItems', 'Cart', 'const getCartItems')"
+                            >장바구니 조회</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            href="#"
+                            onclick="AtagActive(this, '#removeCartItem', 'Cart', 'const removeCartItem')"
+                            >장바구니 도서 삭제</a
+                        >
+                    </li>
+                    <hr />
+                    <li>
+                        <a href="#" onclick="AtagActive(this, '#order', 'Order', 'const order')"
+                            >결제하기</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            href="#"
+                            onclick="AtagActive(this, '#getOrders', 'Order', 'const getOrders')"
+                            >주문 목록 조회</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            href="#"
+                            onclick="AtagActive(this, '#getOrderDetail', 'Order', 'const getOrderDetail')"
+                            >주문 상세 상품 조회</a
+                        >
+                    </li>
+                    <hr />
+                    <li>
+                        <a
+                            href="#"
+                            onclick="AtagActive(this, '#search', 'Search', 'const allSearch')"
+                            >검색</a
+                        >
+                    </li>
+                    <hr />
+                </ul>
+            </aside>
+            <section>
+                <article id="info" class="view">
+                    <h2>정보</h2>
+                    <img src="struct.png" alt="전체 구조" />
+                </article>
+
+                <article id="join">
+                    <h3>회원가입</h3>
+                    <pre id="codeDisplay"></pre>
+                </article>
+
+                <article id="login">
+                    <h3>로그인</h3>
+                    <pre id="codeDisplay"></pre>
+                </article>
+
+                <article id="passordResetRequest">
+                    <h3>비밀번호 초기화 요청</h3>
+                    <pre id="codeDisplay"></pre>
+                </article>
+
+                <article id="passwordReset">
+                    <h3>비밀번호 초기화</h3>
+                    <pre id="codeDisplay"></pre>
+                </article>
+
+                <article id="allBooks">
+                    <h3>전체 도서 조회</h3>
+                    <pre id="codeDisplay"></pre>
+                </article>
+
+                <article id="bookDetail">
+                    <h3>개별 도서 조회</h3>
+                    <pre id="codeDisplay"></pre>
+                </article>
+
+                <article id="allCategory">
+                    <h3>카테고리별 전체 조회</h3>
+                    <pre id="codeDisplay"></pre>
+                </article>
+
+                <article id="addLike">
+                    <h3>좋아요 추가</h3>
+                    <pre id="codeDisplay"></pre>
+                </article>
+
+                <article id="removeLike">
+                    <h3>좋아요 취소</h3>
+                    <pre id="codeDisplay"></pre>
+                </article>
+
+                <article id="addToCart">
+                    <h3>장바구니 담기</h3>
+                    <pre id="codeDisplay"></pre>
+                </article>
+
+                <article id="getCartItems">
+                    <h3>장바구니 조회</h3>
+                    <pre id="codeDisplay"></pre>
+                </article>
+
+                <article id="removeCartItem">
+                    <h3>장바구니 도서 삭제</h3>
+                    <pre id="codeDisplay"></pre>
+                </article>
+
+                <article id="order">
+                    <h3>결제하기</h3>
+                    <pre id="codeDisplay"></pre>
+                </article>
+
+                <article id="getOrders">
+                    <h3>주문 목록 조회</h3>
+                    <pre id="codeDisplay"></pre>
+                </article>
+
+                <article id="getOrderDetail">
+                    <h3>주문 상세 상품 조회</h3>
+                    <pre id="codeDisplay"></pre>
+                </article>
+
+                <article id="search">
+                    <h3>검색</h3>
+                    <pre id="codeDisplay"></pre>
+                </article>
+            </section>
+        </div>
+        <script>
+            function AtagActive(element, articleId, file, header) {
+                var allLinks = document.querySelectorAll("a");
+                allLinks.forEach((link) => {
+                    link.classList.remove("active");
+                });
+                element.classList.add("active");
+
+                var noView = document.querySelectorAll("article");
+                noView.forEach((link) => {
+                    link.classList.remove("view");
+                });
+
+                var view = document.querySelectorAll(articleId);
+                view.forEach((link) => {
+                    link.classList.add("view");
+                });
+
+                document.querySelector("#codeDisplay").innerHTML = "";
+                fetchPre(file, articleId, header);
+            }
+
+            function fetchPre(file, articleId, header) {
+                var stardPath = "API/controller/";
+                var endPath = file + "Controller.js";
+                var fullPath = stardPath + endPath;
+                var regex = new RegExp(`(${header})`, "g");
+
+                fetch(fullPath)
+                    .then((response) => response.text())
+                    .then((data) => {
+                        const highlightedData = data;
+                        document.querySelector(articleId + " #codeDisplay").innerHTML =
+                            highlightedData;
+                    })
+                    .catch((error) => console.error("Error fetching file:", error));
+            }
+        </script>
+    </body>
+</html>
