@@ -10,14 +10,16 @@ const allSearch = (req, res) => {
 
     try {
         let sql = `select * from books where title LIKE ? OR summary LIKE ? OR detail LIKE ? OR author LIKE ?`;
-        const values = [word, word, word, word];
+        const values = [`%${word}%`, `%${word}%`, `%${word}%`, `%${word}%`];
         conn.query(sql, values, (err, results) => {
             if (err) {
                 console.log(err);
                 return res.status(StatusCodes.NOT_FOUND).end();
             }
-            if (results) {
+            if (results.length > 0) {
                 return res.status(StatusCodes.OK).json(results);
+            } else {
+                return res.status(StatusCodes.NOT_FOUND).end();
             }
         });
     } catch (error) {

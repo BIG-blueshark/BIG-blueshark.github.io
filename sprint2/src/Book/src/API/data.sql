@@ -48,3 +48,4 @@ insert into likes (user_id, liked_book_id) values(2, 5);
 
 delete from likes
 where user_id = 1 and liked_book_id = 3;
+
