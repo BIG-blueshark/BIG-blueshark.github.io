@@ -1,0 +1,186 @@
+/* 기본 스타일 */
+body {
+    color: #585858;
+    background-color: #f0f0f0;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjus: 100%;
+}
+li {
+    list-style: none;
+}
+a {
+    text-decoration: none;
+}
+h1,
+h2,
+h3,
+p {
+    margin: 10px 5px;
+}
+h1,
+h2 {
+    font-size: 1.8em;
+}
+#title {
+    text-align: center;
+}
+header {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    height: 60px;
+    z-index: 1000;
+    background-color: white;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.05), 0 1px 0 rgba(0, 0, 0, 0.05);
+}
+#wrap {
+    display: grid;
+    grid-template-columns: 20% 1fr;
+    grid-gap: 1%;
+    margin-top: 60px;
+    height: calc(100vh - 60px);
+}
+aside {
+    background-color: #333;
+    color: #fff;
+    padding-top: 10px;
+}
+aside > ul {
+    width: 100%;
+}
+aside > ul > li > a {
+    display: block;
+    color: #fff;
+    padding: 6.5px 0px;
+}
+aside > ul > li > a.active {
+    background-color: #afad4c;
+}
+aside > ul > li > a:hover:not(.active) {
+    background-color: #555;
+}
+aside > h2 {
+    padding: 20px 0 20px 20px;
+    color: #fff;
+}
+section {
+    margin-left: 0;
+    position: relative;
+}
+article {
+    width: 99%;
+    height: calc(100vh - 80px);
+    background-color: white;
+}
+article {
+    display: none;
+}
+.view {
+    display: grid;
+    justify-content: center;
+}
+.view h2,
+.view h3 {
+    padding: 10px 5px 0px 10px;
+}
+#wrap section article {
+    max-height: 100%;
+    overflow-y: auto;
+}
+
+/* join */
+#join {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    height: 100%;
+}
+
+#join > h2 {
+    grid-column: 1;
+    grid-row: 1;
+    text-align: center;
+}
+
+#join > div:nth-child(2) {
+    grid-column: 3;
+    grid-row: 1;
+    margin-top: 10px;
+}
+
+#join > div:nth-child(2) ul,
+#join > div:nth-child(2) ul li {
+    display: inline;
+}
+
+#join > div:nth-child(3) {
+    grid-column: 2;
+    grid-row: 2;
+    text-align: center;
+}
+
+#join > div:nth-child(3) * {
+    display: block;
+    width: 90%;
+    height: 32px;
+    margin: 4px auto;
+}
+
+/* login */
+#login {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    height: 100%;
+}
+
+#login > div {
+    grid-column: 2;
+    grid-row: 2;
+    text-align: center;
+}
+
+#login > div * {
+    display: block;
+    width: 90%;
+    height: 32px;
+    margin: 4px auto;
+}
+
+/* passordResetRequest */
+#passordResetRequest {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    height: 100%;
+}
+
+#passordResetRequest > div {
+    grid-column: 2;
+    grid-row: 2;
+    text-align: center;
+}
+
+#passordResetRequest > div * {
+    display: block;
+    width: 90%;
+    height: 32px;
+    margin: 4px auto;
+}
+
+/* passwordReset */
+#passwordReset {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    height: 100%;
+}
+
+#passwordReset > div {
+    grid-column: 2;
+    grid-row: 2;
+    text-align: center;
+}
+
+#passwordReset > div * {
+    display: block;
+    width: 90%;
+    height: 32px;
+    margin: 4px auto;
+}
